@@ -1,0 +1,10 @@
+---
+- hosts: elasticsearch
+  gather_facts: true
+  become: true
+  roles:
+    - role: elastic.elasticsearch
+    - role: onaio.rapidpro.certbot
+      when: es_use_certbot == true
+    - role: onaio.rapidpro.nginx
+      when: es_use_nginx is not defined or es_use_nginx

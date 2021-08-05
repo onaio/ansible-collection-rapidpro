@@ -1,0 +1,9 @@
+---
+- hosts: postgresql
+  gather_facts: true
+  become: true
+  vars:
+    postgresql_monit_scripts: ['postgres']
+
+  roles:
+    - role: onaio.rapidpro.postgresql

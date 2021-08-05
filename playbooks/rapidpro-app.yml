@@ -1,0 +1,53 @@
+---
+- hosts: rapidpro
+  gather_facts: true
+  become: true
+  serial: 1 # Runs playbook one server at at time (to achieve a rolling update)
+  max_fail_percentage: 0
+  vars:
+    rapidpro_openjdk_version: 8 # Due to https://github.com/elastic/logstash/issues/9316
+  pre_tasks:
+    - name: Add ubuntugis ppa
+      apt_repository:
+        repo: "{{ item }}"
+        state: present
+      with_items: ['ppa:ubuntugis/ubuntugis-unstable', 'ppa:deadsnakes/ppa']
+    - name: Apt update
+      apt:
+        update_cache: yes
+    - name: Install libgdal-dev
+      apt:
+        pkg: [python3.6-dev, python3-pip, libgdal-dev]
+        state: present
+  roles:
+    - role: onaio.rapidpro.pgbouncer
+      tags:
+        - pgbouncer
+    - role: onaio.rapidpro.rapidpro
+      tags:
+        - rapidpro
+    - role: onaio.rapidpro.certbot
+      when: rapidpro_use_certbot == true
+      tags:
+        - certbot
+    - role: onaio.rapidpro.nginx
+      tags:
+        - nginx
+    - role: onaio.rapidpro.openjdk
+      openjdk_version: "{{ rapidpro_openjdk_version }}"
+      tags:
+        - java
+        - logstash
+    - role: onaio.rapidpro.logstash
+      openjdk_version: "{{ rapidpro_openjdk_version }}"
+      clear_logstash_config: true
+      logstash_plugins: "{{ rapidpro_logstash_plugins }}"
+      logstash_custom_outputs: "{{ rapidpro_logstash_custom_outputs }}"
+      logstash_custom_inputs: "{{ rapidpro_logstash_custom_inputs }}"
+      config_logstash: true
+      logstash_system_groups: ["adm"]
+      tags:
+        - logstash
+  post_tasks:
+    - include_tasks: tasks/slack-end.yml
+      when: slack_notifications

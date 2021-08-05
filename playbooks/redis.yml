@@ -1,0 +1,6 @@
+---
+- hosts: redis
+  gather_facts: true
+  become: true
+  roles:
+    - redis

@@ -10,3 +10,57 @@
 [submodule "roles/rapidpro_indexer"]
 	path = roles/rapidpro_indexer
 	url = https://github.com/onaio/ansible-rapidpro-indexer.git
+[submodule "roles/java"]
+	path = roles/java
+	url = https://github.com/onaio/ansible-java.git
+[submodule "roles/logstash"]
+	path = roles/logstash
+	url = https://github.com/onaio/ansible-logstash.git
+[submodule "roles/redis"]
+	path = roles/redis
+	url = https://github.com/onaio/ansible-redis.git
+[submodule "roles/django"]
+	path = roles/django
+	url = https://github.com/onaio/ansible-django
+[submodule "roles/gpg-import"]
+	path = roles/gpg_import
+	url = https://github.com/onaio/ansible-gpg-import.git
+[submodule "roles/backup"]
+	path = roles/backup
+	url = https://github.com/onaio/ansible-backup.git
+[submodule "roles/openjdk"]
+	path = roles/openjdk
+	url = https://github.com/onaio/ansible-openjdk.git
+[submodule "roles/collectd"]
+	path = roles/collectd
+	url = https://github.com/onaio/ansible-collectd.git
+[submodule "roles/monit"]
+	path = roles/monit
+	url = https://github.com/onaio/ansible-monit.git
+[submodule "roles/git_clone"]
+	path = roles/git_clone
+	url = https://github.com/onaio/ansible-git-clone.git
+[submodule "roles/ssl_certificate"]
+	path = roles/ssl_certificate
+	url = https://github.com/onaio/ansible-ssl-certificate.git
+[submodule "roles/pgbouncer"]
+	path = roles/pgbouncer
+	url = https://github.com/onaio/ansible-pgbouncer.git
+[submodule "roles/nginx"]
+	path = roles/nginx
+	url = https://github.com/onaio/ansible-nginx.git
+[submodule "roles/certbot"]
+	path = roles/certbot
+	url = https://github.com/onaio/ansible-certbot.git
+[submodule "roles/linux_config"]
+	path = roles/linux_config
+	url = https://github.com/onaio/ansible-linux-config.git
+[submodule "roles/ssh"]
+	path = roles/ssh
+	url = https://github.com/onaio/ansible-ssh.git
+[submodule "roles/hostname"]
+	path = roles/hostname
+	url = https://github.com/onaio/ansible-hostname.git
+[submodule "roles/fluentd"]
+	path = roles/fluentd
+	url = https://github.com/onaio/ansible-fluentd.git
