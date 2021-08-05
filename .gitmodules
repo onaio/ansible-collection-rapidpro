@@ -1,0 +1,12 @@
+[submodule "roles/rapidpro"]
+	path = roles/rapidpro
+	url = https://github.com/onaio/ansible-rapidpro.git
+[submodule "roles/courier"]
+	path = roles/courier
+	url = https://github.com/onaio/ansible-courier.git
+[submodule "roles/mailroom"]
+	path = roles/mailroom
+	url = https://github.com/onaio/ansible-mailroom.git
+[submodule "roles/rapidpro_indexer"]
+	path = roles/rapidpro_indexer
+	url = https://github.com/onaio/ansible-rapidpro-indexer.git
