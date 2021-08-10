@@ -1,12 +1,20 @@
 ---
-- hosts: rapidpro
+- hosts: rapidpro_rapidpro
   gather_facts: true
   become: true
   serial: 1 # Runs playbook one server at at time (to achieve a rolling update)
   max_fail_percentage: 0
+  collections:
+    - onaio.rapidpro
   vars:
     rapidpro_openjdk_version: 8 # Due to https://github.com/elastic/logstash/issues/9316
   pre_tasks:
+    - name: load in Rapidpro vars
+      include_vars:
+        file: "../vars/{{ rapidpro_setup_type }}.yml"
+    - include_tasks: tasks/python3-ubuntu.yml
+    - name: Setup Ansible
+      setup:
     - name: Add ubuntugis ppa
       apt_repository:
         repo: "{{ item }}"
@@ -20,25 +28,25 @@
         pkg: [python3.6-dev, python3-pip, libgdal-dev]
         state: present
   roles:
-    - role: onaio.rapidpro.pgbouncer
+    - role: onaio.pgbouncer
       tags:
         - pgbouncer
-    - role: onaio.rapidpro.rapidpro
+    - role: rapidpro
       tags:
         - rapidpro
-    - role: onaio.rapidpro.certbot
+    - role: onaio.certbot
       when: rapidpro_use_certbot == true
       tags:
         - certbot
-    - role: onaio.rapidpro.nginx
+    - role: nginx
       tags:
         - nginx
-    - role: onaio.rapidpro.openjdk
+    - role: onaio.openjdk
       openjdk_version: "{{ rapidpro_openjdk_version }}"
       tags:
         - java
         - logstash
-    - role: onaio.rapidpro.logstash
+    - role: onaio.logstash
       openjdk_version: "{{ rapidpro_openjdk_version }}"
       clear_logstash_config: true
       logstash_plugins: "{{ rapidpro_logstash_plugins }}"
@@ -48,6 +56,4 @@
       logstash_system_groups: ["adm"]
       tags:
         - logstash
-  post_tasks:
-    - include_tasks: tasks/slack-end.yml
-      when: slack_notifications
+

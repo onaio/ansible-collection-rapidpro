@@ -1,0 +1,35 @@
+---
+- hosts: all
+  gather_facts: False
+
+  pre_tasks:
+    - name: load in Rapidpro vars
+      include_vars:
+        file: "../vars/{{ rapidpro_setup_type }}.yml"
+    - include_tasks: tasks/python3-ubuntu.yml
+    - name: Setup Ansible
+      setup:
+  roles:
+    - role: onaio.hostname
+      become: true
+      tags:
+        - monitoring
+        - hostname
+      when: set_hostname
+
+    - role: onaio.collectd
+      collectd_scripts: "{{ collectd_scripts_initial }}"
+      collectd_server_mode: true
+      become: true
+      tags:
+        - monitoring
+        - collectd
+      when: install_collectd
+
+    - role: onaio.monit
+      monit_setup_mode: true
+      become: true
+      monit_scripts: "{{ server_monitoring_monit_scripts }}"
+      tags:
+        - monitoring
+        - monit

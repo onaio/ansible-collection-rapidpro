@@ -1,0 +1,32 @@
+---
+- import_playbook: initial-setup.yml
+  tags:
+    - monitoring
+    - prepare
+
+- import_playbook: postgresql.yml
+  tags:
+    - postgres
+    - postgresql
+    - databases
+
+- import_playbook: elasticsearch.yml
+  tags:
+    - elasticsearch
+    - databases
+
+
+- import_playbook: redis.yml
+  tags:
+    - redis
+    - databases
+
+- import_playbook: rapidpro-app.yml
+  tags:
+    - rapidpro
+    - app
+
+- import_playbook: rapidpro-indexer.yml
+  tags:
+    - rapidpro-indexer
+    - indexer
