@@ -1,0 +1,65 @@
+---
+ansible_ssh_user: "ubuntu"
+deployment_owner: "example-org"
+rapidpro_setup_type: "load-balanced"
+rapidpro_admin_email: "admin@example.com"
+rapidpro_email: "{{ rapidpro_admin_email }}"
+rapidpro_monitoring_server_address: 10.0.0.2
+rapidpro_app_server_addresses:
+  - 10.0.0.3
+  - 10.0.0.4
+rapidpro_database_server_address: 10.0.0.5
+rapidpro_postgresql_password: "Change-me-vault-me" #use ansible vault to encrypt secrets
+slack_monit_endpoint: ""
+server_monitoring_opsgenie_api_key: ""
+
+rapidpro_postgresql_ssl_ca_key: |
+  -----BEGIN RSA PRIVATE KEY-----
+  MIIEogIBAAKCAQEAuBSrKWuNDR8q77YbYmowciYhZbWsvB7OyxII3Z6lLk5YVYaG
+  jaYTMoxWdaPGqrABpPjE1kFIn6JcOn+M8p1ypEEzVwwo5h4bQMvXVRIYgWudZbBF
+  ngqx4s33tBuLVLZR8zM/H6XjkNvQ8pT5vW7LTO5d1/IWmK0q8blCUJSZKqnsLKVR
+  ALoiFXbJptgxaOIEWZYMDrC+Fvd7OdsraiGLHSQ458SrX1iSUlcKXR9iBITeLcwX
+  4irkA0A2BrNJJUL8+rYdu3u5iPugby9zmb0PndnnRJSrp93ywsCODCcyjHbHqJO7
+  FzHY7Th45Ul3lysafit9BiYH+I0PyCmuirXE2QIDAQABAoIBACmtVEtedGMCKYB4
+  ZJ7Vl/5gL7ONfHxjJULI5IT4xEFFr649dP1hGnuZVoHwAKzoiJbHVBmGUmECK4t7
+  EXhkuW4C7RLKSABB1L3I6QnzvOSgbtR1Im3z0e6d33VBvzwAw3EiqyoJLwq/GgGy
+  RRDkotbaKRkZUJBktJJh9We1HTCRQgENy4q2LCXKOwILR1icI3y39lz9uL78BfkL
+  77J4yFtoExBvX/87F0F4du3rpD6vFU/XfoqT7IrLB+BWb1EItPtf7xQeZwle15vy
+  PZb1/eeLPV87Rvdq9a8m/utcj7H7McnsvY9ao88ApBe9pSMRsRgMbJ8y6F+wXr0h
+  XcPY8/kCgYEA2ToSeFT19fdyI9qcJFy5KrmkozmaQ/oqc1UV5QLopUJtiIy7nNoa
+  ZFWOhl2VxdpnYHYsArS44LrKd7ILVvV6nuu9XE+WZfnYcad2NWRQD8Ow2YvebHx6
+  QxqEl5/tDpLQk98RX/N4p9VzE2oFCW1bZV0HKmjf5b4SK9n+dS0RYbcCgYEA2PAG
+  DTcAwAK3pqfcPQNEEtr+BSDK4P9I9bma7F65up11QeSjQa6zSNuguSpQrBnFXOLY
+  8Sbqa2ARxJ8mLMl41LBOUpZY3fdzfuyLSf0wL1cn5itmDSiG1Cmet69H/mOIZKDa
+  HRib6R6Yc2F+7/Zq6abuEVXjoF9AJ10ak6Wkze8CgYBIoCDCuG0PUi6IDDO9+H4z
+  6aNAqyaHaaE9tAnA6ksLzXy/dYXYOBcwymX/SFSltJJxbrDiKrfQ8sJ0aENgTGw1
+  q81Aip9W8sRJo1pjGWmnC58Z7KhtjuR1gO0poF9qSu2PMrolYUpKmpOBvyV19Gjl
+  J8gYhr2smvKKVLS9SlcQWwKBgDsESVEtBno2AwpGnkbG7a0HgJWajzbYnFulC72E
+  I5jeHzk23ycORN3sSfQ1y86WEDgtyoEIajud3heUiEkk4kdSU2xqVHDGUdhUt6wA
+  QiyO1F7srY2k2dE8JV6pQ7e0EjX2AIBr4nZwCV9SRbs4WWuJKzjyGcPWRdivnnxO
+  UuBnAoGACFTR+s33UUol3pVwyuzqnbK5uFZYUOaYtpRL+39Ts0YpKoRS+JInzLmY
+  kIAejvxPoxxTk+rvgdkTN0J5B7oZNQMWqnxChkL3yXqCVuJI4CU8TPD6LeO7WnTU
+  4RH55pxytY26aKm+xyF46J/K6xTKeE8kDtCYXbsdAmBswIlAHZA=
+  -----END RSA PRIVATE KEY-----
+rapidpro_postgresql_ssl_ca_cert: |
+  -----BEGIN CERTIFICATE-----
+  MIIDdzCCAl+gAwIBAgIUFILNtRol8YCXIFdvcWbijn5ino4wDQYJKoZIhvcNAQEL
+  BQAwSzELMAkGA1UEBhMCVVMxETAPBgNVBAgMCE5ldyBZb3JrMRMwEQYDVQQKDApT
+  YW1wbGUgT3JnMRQwEgYDVQQDDAtleGFtcGxlLm9yZzAeFw0yMTA4MDkxMjQ2MjVa
+  Fw0zMTA4MDcxMjQ2MjVaMEsxCzAJBgNVBAYTAlVTMREwDwYDVQQIDAhOZXcgWW9y
+  azETMBEGA1UECgwKU2FtcGxlIE9yZzEUMBIGA1UEAwwLZXhhbXBsZS5vcmcwggEi
+  MA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQC4FKspa40NHyrvthtiajByJiFl
+  tay8Hs7LEgjdnqUuTlhVhoaNphMyjFZ1o8aqsAGk+MTWQUifolw6f4zynXKkQTNX
+  DCjmHhtAy9dVEhiBa51lsEWeCrHizfe0G4tUtlHzMz8fpeOQ29DylPm9bstM7l3X
+  8haYrSrxuUJQlJkqqewspVEAuiIVdsmm2DFo4gRZlgwOsL4W93s52ytqIYsdJDjn
+  xKtfWJJSVwpdH2IEhN4tzBfiKuQDQDYGs0klQvz6th27e7mI+6BvL3OZvQ+d2edE
+  lKun3fLCwI4MJzKMdseok7sXMdjtOHjlSXeXKxp+K30GJgf4jQ/IKa6KtcTZAgMB
+  AAGjUzBRMB0GA1UdDgQWBBSyjqGOiodB3p543uw0EqlJzV9y8zAfBgNVHSMEGDAW
+  gBSyjqGOiodB3p543uw0EqlJzV9y8zAPBgNVHRMBAf8EBTADAQH/MA0GCSqGSIb3
+  DQEBCwUAA4IBAQCnRXC2Q8YD1yKAp5W3fe9dMCihWvngZ/ra2ZPiiEYeHXpN6Uxs
+  OyDIRZFqiykabpXZLCfprHMMamOJDdCfDAwIblMEa9+RRRsNhJmrFMN9MZ6qQ25l
+  I7kIn/C4EbUyFLlyv0tq2we9Qt+cvLhWFhjYFptn++aQTGAGzhiaeu20/qUpaX+s
+  o//DtKWMbHLmJpLfbF8CNUvWmsBF5pz5WmPs6giQmCaTI0Jr6xJTLmhLqN1TsqAN
+  LmhRaez8JBqf3FbYxQ1Ke818IHHkmDbSxbvwrwpjuEtXZ6Ebpk2EY8QHkqFKBG38
+  uTfWywkbG78tO33Nlu/z8VWk+D61DzW3LcMi
+  -----END CERTIFICATE-----

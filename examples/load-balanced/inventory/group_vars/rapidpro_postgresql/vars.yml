@@ -1,0 +1,10 @@
+---
+rapidpro_postgresql_ssl_domain: "example.org"
+
+
+rapidpro_backup_gpg_key_id: "B66789D5"
+rapidpro_backup_gpg_private_key: "./files/gpg/{{ rapidpro_backup_gpg_key_id }}-priv.key"
+rapidpro_backup_gpg_public_key: "./files/gpg/{{ rapidpro_backup_gpg_key_id }}-pub.key"
+rapidpro_backup_gpg_trust_file: "./files/gpg/{{ rapidpro_backup_gpg_key_id }}-ultimate.trust"
+rapidpro_backup_gpg_pass: "secret"
+postgresql_backup_enabled: false

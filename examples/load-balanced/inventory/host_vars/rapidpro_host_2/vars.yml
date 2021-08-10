@@ -1,0 +1,2 @@
+---
+ansible_host: "{{ rapidpro_app_server_addresses[1] }}"
