@@ -2,6 +2,10 @@
 
 # default values
 deployment_environment: "production"
+rapidpro_version: v6.4.8
+mailroom_version: v6.4.3
+courier_version: v6.4.0
+rapidpro_indexer_version: v6.4.0
 # Ansible
 ansible_python_interpreter: "/usr/bin/env python3"
 
@@ -10,6 +14,8 @@ set_hostname: true
 server_hostname: "{{ inventory_hostname }}"
 server_monitoring_monit_scripts: ["monit", "system", "openssh-server"]
 monit_opsgenie_api_key: "{{ server_monitoring_opsgenie_api_key }}"
+rapidpro_graylog_server: "{{ rapidpro_monitoring_server_address }}"
+rapidpro_graylog_port: 12204
 
 install_collectd: true
 collectd_scripts_initial:
@@ -34,6 +40,10 @@ redis_backup_enabled: false
 rapidpro_support_email: "{{ rapidpro_email }}"
 rapidpro_smtp_default_from_email: "{{ rapidpro_email }}"
 rapidpro_flow_from_email: "{{ rapidpro_email }}"
+rapidpro_mailroom_host: "127.0.0.1"
+rapidpro_mailroom_port: 8081
+rapidpro_courier_bind_address: "127.0.0.1"
+rapidpro_courier_port: 8080
 rapidpro_allowed_hosts:
   - "*"
 
@@ -131,9 +141,8 @@ nginx_sites:
         alias: "/home/rapidpro/media"
       ssl:
         enabled:   true
-        cert: "{{ rapidpro_ssl_cert_path }}"
-        key: "rapidpro_ssl_key_path.key"
-        ssl_passphrase: "{{ rapidpro_ssl_cert_passphrase }}"
+        cert: "{{ rapidpro_ssl_cert }}"
+        key: "{{ rapidpro_ssl_key }}"
         src_dir: "{{ rapidpro_ssl_cert_directory }}"
         conf: "{{ rapidpro_domains[0] }}-ssl.conf"
         remote_src: false
@@ -153,11 +162,36 @@ nginx_server_name: "{{ rapidpro_domains[0] }}"
 # Certbot
 rapidpro_use_certbot: false
 
+# logstash
+rapidpro_logstash_plugins:
+  - name: logstash-output-gelf
+    state: present
+rapidpro_logstash_custom_outputs:
+  - output: 'gelf'
+    lines:
+      - 'host => "{{ rapidpro_graylog_server }}"'
+      - 'port => "{{ rapidpro_graylog_port }}"'
+      - 'sender => "{{ rapidpro_domains[0] }}"'
+rapidpro_logstash_custom_inputs:
+  - input: 'file'
+    lines:
+      - 'path => ["/var/log/nginx/{{ rapidpro_domains[0] }}-access.log"]'
+      - 'start_position => "end"'
+      - 'add_field => {'
+      - '  ssl => false'
+      - '  nginx_access => true'
+      - '  from_nginx => true'
+      - '  from_host => "%{host}"'
+      - '  from_domain => "{{ rapidpro_domains[0] }}"'
+      - '  from_rapidpro => true'
+      - '  git_version => "{{ rapidpro_version }}"'
+      - '}'
+
+
 # RapidPro Indexer
 rapidpro_indexer_postgresql_url: "postgres://{{ rapidpro_postgresql_user }}:{{ rapidpro_postgresql_password }}@127.0.0.1:5432/{{ rapidpro_postgresql_database }}?sslmode=disable"
 rapidpro_indexer_elasticsearch_url: "{{ rapidpro_elasticsearch_url }}"
 rapidpro_indexer_sentry_dsn: ""
-rapidpro_indexer_version: "5.4.0"
 rapidpro_indexer_rebuild: true
 
 # Elasticsearch

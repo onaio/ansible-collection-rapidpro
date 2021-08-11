@@ -36,6 +36,10 @@ In order to use this collection, make sure the following variables are defined i
 - `rapidpro_backup_gpg_private_key`: Path in your playbooks to fetch the PGP private key. Refer to [docs/generating-gpg-key.md](./docs/generating-gpg-key.md) on how to generate a GPG key
 - `rapidpro_backup_gpg_public_key`: Path in your playbooks to fetch the PGP public key
 - `rapidpro_backup_gpg_trust_file`: Path in your playbooks containing the exported trust to grant the imported keypair
+- `rapidpro_ssl_cert_directory`: Path in your playbooks to search for SSL certificate and key
+- `rapidpro_ssl_cert` - SSL certificate filename in the directory specified above
+- `rapidpro_ssl_key` - SSL key filename in the directory specified above
+
 
 ## Common optional variables
 `rapidpro_version`: Version of RapidPro to setup. Note that you will need to update the version of mailroom and courier to use that will be compatible with the selected version by setting `rapidpro_mailroom_version`, `rapidpro_indexer_version` and `rapidpro_courier_version` when you change the default version.
