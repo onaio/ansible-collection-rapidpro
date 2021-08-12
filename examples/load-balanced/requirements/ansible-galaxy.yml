@@ -17,11 +17,10 @@ roles:
     version: 0c544ce34d193096d43fd828afea54e2a7c091df
     scm: git
 
-# should be reverted to Upstream when https://github.com/ANXS/postgresql/pull/475 gets merged 🤞
   - name: ANXS.postgresql
     src: https://github.com/onaio/postgresql.git
     scm: git
-    version: 26493277bf692128bf70b9a2a50d4a32b6db23f4
+    version: 625fbbff74293d308d9b5a41684b8ef88408d0d9
 
   - src: ANXS.monit
 
