@@ -143,7 +143,7 @@ Refer to this collection's [README.md](../../README.md) for details on what thes
 Deploy all services all at once or one by one.
 
 ```sh
-ansible-playbook -i inventories/[environment] collections/ansible_collections/onaio/rapidpro/playbooks/laydeploy-all.yml
+ansible-playbook -i inventories/[environment] collections/ansible_collections/onaio/rapidpro/playbooks/deploy-all.yml
 ```
 
 When deploying servers one by one the order of deployment is:
