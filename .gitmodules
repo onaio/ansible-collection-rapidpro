@@ -22,3 +22,6 @@
 [submodule "roles/postgresql"]
 	path = roles/postgresql
 	url = https://github.com/onaio/ansible-postgresql.git
+[submodule "examples/load-balanced/collections/ansible_collections/onaio/monitoring"]
+	path = examples/load-balanced/collections/ansible_collections/onaio/monitoring
+	url = https://github.com/onaio/ansible-collection-monitoring.git

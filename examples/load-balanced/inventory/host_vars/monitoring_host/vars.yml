@@ -1,2 +1,2 @@
 ---
-ansible_host: "{{ rapidpro_database_server_address }}"
+ansible_host: "{{ rapidpro_monitoring_server_address }}"
