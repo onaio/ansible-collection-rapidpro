@@ -172,7 +172,7 @@ rapidpro_logstash_custom_outputs:
 rapidpro_logstash_custom_inputs:
   - input: 'file'
     lines:
-      - 'path => ["/var/log/nginx/{{ rapidpro_domains[0] }}-access.log"]'
+      - 'path => ["/var/log/nginx/{{ rapidpro_domains[0] }}-https-ssl-access.log"]'
       - 'start_position => "end"'
       - 'add_field => {'
       - '  ssl => false'
