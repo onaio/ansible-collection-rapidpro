@@ -181,3 +181,18 @@ v. RapidPro App
 ```sh
 ansible-playbook -i inventories/[environment] collections/ansible_collections/onaio/rapidpro/playbooks/rapidpro-app.yml
 ```
+## Monitoring
+
+- Add the [monitoring collection](https://github.com/onaio/ansible-collection-monitoring/) as a git submodule.
+  ```sh
+  git submodule add https://github.com/onaio/ansible-collection-monitoring.git collections/ansible_collections/onaio/monitoring
+  ```
+- Install Ansible Galaxy requirements
+  ```sh
+  ansible-galaxy role install -r collections/ansible_collections/onaio/monitoring/requirements/ansible-galaxy.yml -p roles
+  ```
+- Update your inventories to include all the variables listed in the [collection's documentation](https://github.com/onaio/ansible-collection-monitoring/#using-the-collection)
+- Run the monitoring playbook
+  ```sh
+  ansible-playbook -i iinventories/[environment] deploy-monitoring.yml
+  ```
