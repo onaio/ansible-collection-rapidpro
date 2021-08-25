@@ -1,0 +1,133 @@
+---
+collections:
+  - name: devsec.hardening
+    version: 7.2.0
+  - name: community.mongodb
+    version: 1.2.1
+  - name: https://github.com/onaio/ansible-collection-rapidpro.git
+    type: git
+    version: develop
+
+roles:
+  - src: elastic.elasticsearch
+    version: v7.14.0
+
+  - src: https://github.com/ANXS/apt.git
+    name: ANXS.apt
+    version: 0c544ce34d193096d43fd828afea54e2a7c091df
+    scm: git
+
+  - name: ANXS.postgresql
+    src: https://github.com/onaio/postgresql.git
+    scm: git
+    version: 625fbbff74293d308d9b5a41684b8ef88408d0d9
+
+  - src: ANXS.monit
+
+  - src: https://github.com/ANXS/build-essential.git
+    name: ANXS.build-essential
+    version: b403a08f4ed2e3eb4c8763c5c8faba0888271bcd
+    scm: git
+
+  - src: ANXS.hostname
+    version: v1.0.1
+
+  - src: ANXS.perl
+    version: v1.1.0
+
+  - src: azavea.logstash
+
+  - src: geerlingguy.java
+
+  - src: nodesource.node
+
+  - src: pablocrivella.nvm
+
+  - src: DavidWittman.redis
+    version: 1.2.8
+
+  - src: weareinteractive.ufw
+    version: 1.9.1
+
+  - name: geerlingguy.git
+    version: 2.1.0
+
+  - name: avanov.pyenv
+    version: 1.1.0
+
+  - name: adamyala.ansible-role-clone-repo
+    src: git+https://github.com/adamyala/ansible-role-clone-repo
+    version: 5de19d460af527a5c80d01326a629208008e7c3d
+
+  - src: https://github.com/DavisRayM/python
+    name: DavisRayM.python
+    scm: git
+
+  - src: mrlesmithjr.etc-hosts
+    version: 472eb2d8ece1de323caf5f694ca9499f6d3e538b
+
+  - src: https://github.com/onaio/ansible-monit.git
+    name: onaio.monit
+    scm: git
+
+  - src: https://github.com/onaio/ansible-backup.git
+    name: onaio.backup
+    scm: git
+
+  - src: https://github.com/onaio/ansible-collectd.git
+    mame: onaio.collectd
+    scm: git
+
+  - src: https://github.com/onaio/ansible-django.git
+    mame: onaio.django
+    scm: git
+
+  - src: https://github.com/onaio/ansible-fluentd.git
+    mame: onaio.fluentd
+    scm: git
+
+  - src: https://github.com/onaio/ansible-gpg-import.git
+    mame: onaio.gpg-import
+    scm: git
+
+  - src: https://github.com/onaio/ansible-hostname.git
+    name: onaio.hostname
+    scm: git
+
+  - src: https://github.com/onaio/ansible-java.git
+    name: onaio.java
+    scm: git
+
+  - src: https://github.com/onaio/ansible-pgbouncer.git
+    name: onaio.pgbouncer
+    scm: git
+
+  - src: https://github.com/onaio/ansible-linux-config.git
+    name: onaio.linux-config
+    scm: git
+
+  - src: https://github.com/onaio/ansible-git-clone.git
+    name: onaio.git-clone
+    scm: git
+
+  - src: https://github.com/onaio/ansible-logstash.git
+    name: onaio.logstash
+    scm: git
+
+
+  - src: https://github.com/morrismukiri/ansible-openjdk.git
+    name: onaio.openjdk
+    scm: git
+
+    version: add-meta
+  - src: https://github.com/onaio/ansible-ssh.git
+    name: onaio.ssh
+    scm: git
+
+  - src: https://github.com/onaio/ansible-ssl-certificate.git
+    name: onaio.ssl-certificate
+    scm: git
+
+  - src: https://github.com/onaio/ansible-certbot.git
+    name: onaio.certbot
+    scm: git

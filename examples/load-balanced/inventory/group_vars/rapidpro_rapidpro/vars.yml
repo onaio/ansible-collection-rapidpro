@@ -1,0 +1,6 @@
+---
+rapidpro_domains:
+  - example.com
+rapidpro_ssl_cert_directory: "{{ inventory_dir }}/files/ssl"
+rapidpro_ssl_cert: "certificate.pem"
+rapidpro_ssl_key: "key.pem"

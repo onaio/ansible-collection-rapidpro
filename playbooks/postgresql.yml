@@ -1,0 +1,18 @@
+---
+- hosts: rapidpro_postgresql
+  gather_facts: true
+  become: true
+  collections:
+    - onaio.rapidpro
+  pre_tasks:
+    - name: load in Rapidpro vars
+      include_vars:
+        file: "../vars/{{ rapidpro_setup_type }}.yml"
+    - include_tasks: tasks/python3-ubuntu.yml
+    - name: Setup Ansible
+      setup:
+  vars:
+    postgresql_monit_scripts: ['postgres']
+
+  roles:
+    - role: postgresql

@@ -1,0 +1,12 @@
+# osx
+.DS_Store
+
+# vagrant
+.vagrant
+# vs code
+.vscode
+
+# molecule
+*.pyc
+
+ansible.log

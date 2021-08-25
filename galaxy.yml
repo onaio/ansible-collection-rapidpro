@@ -1,0 +1,16 @@
+namespace: onaio
+name: rapidpro
+version: 1.0.0
+readme: README.md
+authors:
+- Ona Engineering <tech@ona.io>
+description: Sets up RapidPro and its dependencies
+license_file: 'LICENSE'
+tags:
+- rapidpro
+dependencies: {}
+repository: https://github.com/onaio/ansible-collection-rapidpro
+documentation: https://github.com/onaio/ansible-collection-rapidpro/blob/main/README.md
+homepage: https://github.com/onaio/ansible-collection-rapidpro
+issues: https://github.com/onaio/ansible-collection-rapidpro/issues
+build_ignore: []

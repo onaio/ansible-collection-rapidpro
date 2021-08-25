@@ -1,0 +1,6 @@
+---
+- hosts: rapidpro-indexer,rapidpro_indexer
+  gather_facts: true
+  become: true
+  roles:
+    - role: onaio.rapidpro.rapidpro_indexer

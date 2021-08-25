@@ -1,0 +1,261 @@
+---
+
+# default values
+deployment_environment: "production"
+# Ansible
+ansible_python_interpreter: "/usr/bin/env python3"
+
+# Monitoring
+set_hostname: true
+server_hostname: "{{ inventory_hostname }}"
+server_monitoring_monit_scripts: ["monit", "system", "openssh-server"]
+monit_opsgenie_api_key: "{{ server_monitoring_opsgenie_api_key }}"
+rapidpro_graylog_server: "{{ rapidpro_monitoring_server_address }}"
+rapidpro_graylog_port: 12204
+
+install_collectd: true
+collectd_scripts_initial:
+  - "graphite"
+  - "cpu"
+  - "disk"
+  - "load"
+  - "memory"
+collectd_graphite_server_ip: "{{ rapidpro_monitoring_server_address }}"
+collectd_graphite_server_port: 2003
+collectd_graphite_server_protocol: "tcp"
+collectd_server_type: "{{ deployment_environment }}"
+collectd_server_owner: "{{ deployment_owner }}"
+
+# Redis
+redis_version: "2.8.9"
+redis_bind_address: "{{ rapidpro_database_server_address }}"
+redis_backup_enabled: false
+rapidpro_redis_host: "{{ rapidpro_database_server_address }}"
+
+
+# RapidPro
+rapidpro_support_email: "{{ rapidpro_email }}"
+rapidpro_smtp_default_from_email: "{{ rapidpro_email }}"
+rapidpro_flow_from_email: "{{ rapidpro_email }}"
+rapidpro_mailroom_host: "127.0.0.1"
+rapidpro_mailroom_port: 8081
+rapidpro_courier_bind_address: "127.0.0.1"
+rapidpro_courier_port: 8080
+rapidpro_allowed_hosts:
+  - "*"
+
+## Postgres
+rapidpro_postgresql_database: "rapidpro"
+rapidpro_postgresql_user: "rapidpro"
+rapidpro_postgresql_host: "127.0.0.1" #connect to local pgbouncer
+postgres_port: 5432
+rapidpro_postgresql_port: 6432
+postgresql_ssl_domain: "{{ rapidpro_postgresql_ssl_domain }}" # The hostname/domain name to set as the common name in the TLS certificate
+postgresql_ssl_ca_key: "{{ rapidpro_postgresql_ssl_ca_key }}"
+postgresql_ssl_ca_cert: "{{ rapidpro_postgresql_ssl_ca_cert }}"
+
+  # pgbouncer
+pgbouncer_version: "1.*"
+pgbouncer_ignore_startup_parameter: "extra_float_digits"
+pgsql_host: "{{ rapidpro_database_server_address }}"
+pgsql_db: "{{ rapidpro_postgresql_database }}"
+pgsql_user: "{{ rapidpro_postgresql_user }}"
+pgsql_password: "{{ rapidpro_postgresql_password }}"
+pgsql_port: 5432
+default_pool_size: 50
+pgbouncer_host: "{{ rapidpro_postgresql_host }}"
+pgbouncer_port: "{{ rapidpro_postgresql_port }}"
+disable_server_side_cursors: "True"
+database_url: "postgis://{{ pgsql_user }}:{{ pgsql_password }}@{{ pgbouncer_host }}:{{ pgbouncer_port}}/{{ pgsql_db }}"
+dedicated_postgres_host: false
+pgbouncer_server_tls_ca_content: "{{ rapidpro_postgresql_ssl_ca_cert }}"
+
+rapidpro_elasticsearch_url: "http://{{ rapidpro_database_server_address }}:9200"
+
+
+# NGINX
+nginx_install_method: package
+nginx_ssl_dir: "{{ nginx_dir }}/ssl/{{ site.server.server_name }}"
+nginx_https_site_name: "{{ rapidpro_domains[0] }}-https"
+nginx_http_site_name: "{{ rapidpro_domains[0] }}-http"
+nginx_sites:
+  - server:
+      name: "{{ nginx_http_site_name }}"
+      __listen: "80;\n  listen [::]:80;\n"
+      server_name: "{{ rapidpro_domains[0] }}"
+      return: "301 https://$server_name$request_uri"
+      ssl:
+        enabled: false
+  - server:
+      name: "{{ nginx_https_site_name }}"
+      __listen: "443;\n  listen [::]:443;\n"
+      large_client_header_buffers: 4 16k
+      server_name: "{{ rapidpro_domains[0] }}"
+      location1:
+        name: /
+        include: "uwsgi_params"
+        uwsgi_pass: "unix:///var/run/rapidpro/rapidpro.sock"
+        proxy_read_timeout: "300s"
+        uwsgi_read_timeout: "300s"
+        proxy_redirect: "off"
+        proxy_set_header:
+          - Host $host
+          - X-Real-IP $remote_addr
+          - X-Forwarded-For $proxy_add_x_forwarded_for
+          - X-Forwarded-Host $server_name
+        proxy_next_upstream: "error timeout invalid_header http_500 http_502 http_503 http_504"
+      location2:
+        name: "~ /c/"
+        proxy_pass: "http://{{ rapidpro_courier_bind_address }}:{{ rapidpro_courier_port }}"
+        proxy_set_header:
+          - Host $host
+          - X-Real-IP $remote_addr
+          - X-Forwarded-For $proxy_add_x_forwarded_for
+          - X-Forwarded-Host $server_name
+      location3:
+        name: "/sitestatic"
+        alias: "/home/rapidpro/app/sitestatic"
+      location4:
+        name: "/admin"
+        rewrite: "(.*) https://$http_host$1 permanent"
+      location5:
+        name: "/accounts"
+        rewrite: "(.*) https://$http_host$1 permanent"
+      location6:
+        name: "^~ /mr/"
+        proxy_pass: "http://{{ rapidpro_mailroom_host }}:{{ rapidpro_mailroom_port }}"
+        proxy_set_header:
+          - Host $http_host
+          - X-Real-IP $remote_addr
+          - X-Forwarded-For $proxy_add_x_forwarded_for
+          - X-Forwarded-Host $server_name
+        proxy_next_upstream: "error timeout invalid_header http_500 http_502 http_503 http_504"
+      location7:
+        name: "/mr/docs"
+        alias: "/home/mailroom/app/docs"
+      location8:
+        name: "/media"
+        alias: "/home/rapidpro/media"
+      ssl:
+        enabled:   true
+        cert: "{{ rapidpro_ssl_cert }}"
+        key: "{{ rapidpro_ssl_key }}"
+        src_dir: "{{ rapidpro_ssl_cert_directory }}"
+        conf: "{{ rapidpro_domains[0] }}-ssl.conf"
+        remote_src: false
+        create_symlink: false
+        access_log_format: "{{ nginx_access_logs.0.name }}"
+nginx_enabled_sites:
+  - "{{ nginx_https_site_name }}"
+  - "{{ nginx_http_site_name }}"
+nginx_default_enable: false
+
+nginx_access_logs:
+  - name: "timed_combined"
+    format: "'$http_x_forwarded_for - $remote_user [$time_local]  \"$request\" $status $body_bytes_sent \"$http_referer\" \"$http_user_agent\" $request_time $upstream_response_time $gzip_ratio $request_length'"
+    options: null
+    filename: "access.log"
+nginx_server_name: "{{ rapidpro_domains[0] }}"
+# Certbot
+rapidpro_use_certbot: false
+
+# logstash
+rapidpro_logstash_plugins:
+  - name: logstash-output-gelf
+    state: present
+rapidpro_logstash_custom_outputs:
+  - output: 'gelf'
+    lines:
+      - 'host => "{{ rapidpro_graylog_server }}"'
+      - 'port => "{{ rapidpro_graylog_port }}"'
+      - 'sender => "{{ rapidpro_domains[0] }}"'
+rapidpro_logstash_custom_inputs:
+  - input: 'file'
+    lines:
+      - 'path => ["/var/log/nginx/{{ rapidpro_domains[0] }}-https-ssl-access.log"]'
+      - 'start_position => "end"'
+      - 'add_field => {'
+      - '  ssl => false'
+      - '  nginx_access => true'
+      - '  from_nginx => true'
+      - '  from_host => "%{host}"'
+      - '  from_domain => "{{ rapidpro_domains[0] }}"'
+      - '  from_rapidpro => true'
+      - '  git_version => "{{ rapidpro_version }}"'
+      - '}'
+
+
+# RapidPro Indexer
+rapidpro_indexer_postgresql_url: "postgres://{{ rapidpro_postgresql_user }}:{{ rapidpro_postgresql_password }}@127.0.0.1:5432/{{ rapidpro_postgresql_database }}?sslmode=disable"
+rapidpro_indexer_elasticsearch_url: "{{ rapidpro_elasticsearch_url }}"
+rapidpro_indexer_sentry_dsn: ""
+rapidpro_indexer_rebuild: true
+
+# Elasticsearch
+es_major_version: "6.x"
+es_version: "6.8.8"
+es_api_host: "0.0.0.0"
+es_heap_size: "{{ (ansible_memtotal_mb * 0.25) | round | int }}m"
+es_cluster_name: "rapidpro-cluster"
+es_instance_name: "master_node"
+es_config:
+  cluster.name: "{{ es_cluster_name }}"
+  node.name: "{{ es_instance_name }}"
+  discovery.zen.ping.unicast.hosts: "elastic02:9300"
+  http.port: 9200
+  http.host: "{{ es_api_host }}"
+  transport.tcp.port: 9300
+  bootstrap.memory_lock: false
+es_use_nginx: false # TODO: delete
+es_use_certbot: false # TODO: delete
+
+# PostgreSQL
+postgresql_version: 10
+postgresql_users:
+  - name: "{{ rapidpro_postgresql_user }}"
+    pass: "{{ rapidpro_postgresql_password }}"
+    encrypted: true
+postgresql_databases:
+  - name: "{{ rapidpro_postgresql_database }}"
+    owner: "{{ rapidpro_postgresql_user }}"
+    encoding: "UTF-8"
+    hstore: yes
+    gis: yes
+postgresql_database_extensions:
+  - db: "{{ rapidpro_postgresql_database }}"
+    extensions:
+      - postgis
+      - hstore
+postgresql_listen_addresses:
+  - "{{ rapidpro_database_server_address }}"
+  - "127.0.0.1"
+postgresql_ext_install_postgis: yes
+postgresql_ext_postgis_version: "2.5"
+postgresql_ext_postgis_deps:
+  - libgeos-c1v5
+  - "postgresql-{{postgresql_version}}-postgis-{{postgresql_ext_postgis_version}}"
+  - "postgresql-{{postgresql_version}}-postgis-{{postgresql_ext_postgis_version}}-scripts"
+postgresql_backup_target_protocol: "file"
+postgresql_backup_target_path: "/backups/postgresql"
+postgresql_backup_opsgenie_api_key: "{{ server_monitoring_opsgenie_api_key }}"
+postgresql_backup_system_user: "postgres"
+postgresql_backup_system_group: "postgres"
+postgresql_backup_database: "{{ rapidpro_postgresql_database }}"
+postgresql_backup_gpg_private_key: "{{ rapidpro_backup_gpg_private_key }}"
+postgresql_backup_gpg_public_key: "{{ rapidpro_backup_gpg_public_key }}"
+postgresql_backup_gpg_trust_file: "{{ rapidpro_backup_gpg_trust_file }}"
+postgresql_backup_gpg_key_id: "{{ rapidpro_backup_gpg_key_id }}"
+postgresql_backup_gpg_pass: "{{ rapidpro_backup_gpg_pass }}"
+postgresql_pg_hba_trust_hosts:
+  - "{{ rapidpro_app_server_addresses[0] }}/32"
+  - "{{ rapidpro_app_server_addresses[1] }}/32"
+  - "127.0.0.1/32"
+postgresql_user_privileges:
+  - name: "{{ rapidpro_postgresql_user }}"
+    db: "{{ rapidpro_postgresql_database }}"
+    priv: "ALL"
+    role_attr_flags: "LOGIN"
+
+
+# Certbot
+certbot_create_certs: false

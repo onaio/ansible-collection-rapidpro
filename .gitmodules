@@ -1,0 +1,27 @@
+[submodule "roles/rapidpro"]
+	path = roles/rapidpro
+	url = https://github.com/onaio/ansible-rapidpro.git
+[submodule "roles/courier"]
+	path = roles/courier
+	url = https://github.com/onaio/ansible-courier.git
+[submodule "roles/mailroom"]
+	path = roles/mailroom
+	url = https://github.com/onaio/ansible-mailroom.git
+[submodule "roles/rapidpro_indexer"]
+	path = roles/rapidpro_indexer
+	url = https://github.com/onaio/ansible-rapidpro-indexer.git
+[submodule "roles/redis"]
+	path = roles/redis
+	url = https://github.com/onaio/ansible-redis.git
+[submodule "roles/pgbouncer"]
+	path = roles/pgbouncer
+	url = https://github.com/onaio/ansible-pgbouncer.git
+[submodule "roles/nginx"]
+	path = roles/nginx
+	url = https://github.com/onaio/ansible-nginx.git
+[submodule "roles/postgresql"]
+	path = roles/postgresql
+	url = https://github.com/onaio/ansible-postgresql.git
+[submodule "examples/load-balanced/collections/ansible_collections/onaio/monitoring"]
+	path = examples/load-balanced/collections/ansible_collections/onaio/monitoring
+	url = https://github.com/onaio/ansible-collection-monitoring.git
